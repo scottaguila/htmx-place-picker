@@ -28,8 +28,21 @@ app.post('/places', (req, res) => {
   // Returns location with matching id
   const location = AVAILABLE_LOCATIONS.find(loc => loc.id === locationId);
   INTERESTING_LOCATIONS.push(location);
+
+  const availableLocations = AVAILABLE_LOCATIONS.filter(
+    location => !INTERESTING_LOCATIONS.includes(location)
+  );
   // Returns location item, which HTMX will target to the "My Dream Locations" section
-  res.send(renderLocation(location, false));
+  res.send(`
+    ${renderLocation(location, false)}
+
+    <ul 
+      id="available-locations" 
+      class="locations" 
+      hx-swap-oob="true">
+      ${availableLocations.map(location => renderLocation(location)).join('')}
+    </ul>
+  `);
 });
 
 // Receives DELETE request with locationId and
