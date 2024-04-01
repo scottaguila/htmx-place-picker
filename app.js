@@ -29,7 +29,7 @@ app.post('/places', (req, res) => {
   const location = AVAILABLE_LOCATIONS.find(loc => loc.id === locationId);
   INTERESTING_LOCATIONS.push(location);
   // Returns location item, which HTMX will target to the "My Dream Locations" section
-  res.send(renderLocation(location));
+  res.send(renderLocation(location, false));
 });
 
 // Receives DELETE request with locationId and
