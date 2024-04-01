@@ -28,10 +28,8 @@ app.post('/places', (req, res) => {
   // Returns location with matching id
   const location = AVAILABLE_LOCATIONS.find(loc => loc.id === locationId);
   INTERESTING_LOCATIONS.push(location);
-  // Why not redirect to '/', which would call renderLocationsPage?
-  res.send(`
-    TODO
-  `);
+  // Returns location item, which HTMX will target to the "My Dream Locations" section
+  res.send(renderLocation(location));
 });
 
 // Receives DELETE request with locationId and
