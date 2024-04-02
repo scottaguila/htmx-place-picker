@@ -52,10 +52,26 @@ app.delete('/places/:id', (req, res) => {
   const locationIndex = INTERESTING_LOCATIONS.findIndex(
     loc => loc.id === locationId
   );
+
+  // Removes location from INTERESTING_LOCATIONS
   INTERESTING_LOCATIONS.splice(locationIndex, 1);
-  // Sends back empty response, which will replace the
-  // element that sent the DELETE request
-  res.send();
+
+  // Updates available locations after removing above location
+  // from INTERESTING_LOCATIONS
+  const availableLocations = AVAILABLE_LOCATIONS.filter(
+    location => !INTERESTING_LOCATIONS.includes(location)
+  );
+
+  // Note that hx-swap-oob means the button that sent the DELETE
+  // request is still receiving an empty response.
+  res.send(`
+    <ul 
+      id="available-locations" 
+      class="locations" 
+      hx-swap-oob="true">
+      ${availableLocations.map(location => renderLocation(location)).join('')}
+    </ul>
+  `);
 });
 
 app.listen(3000);
